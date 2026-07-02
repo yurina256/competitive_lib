@@ -1,13 +1,13 @@
-#pragma once
+g #pragma once
 #include <vector>
 #include <string>
 
-/**
- * @brief トライ木 (Trie)
- * 
- * 英小文字の文字列集合を木構造で管理し、追加や接頭辞（prefix）による出現単語数のカウントを高速に行う。
- */
-struct Trie {
+    /**
+     * @brief トライ木 (Trie)
+     *
+     * 英小文字の文字列集合を木構造で管理し、追加や接頭辞（prefix）による出現単語数のカウントを高速に行う。
+     */
+    struct Trie {
   std::vector<std::vector<long long>> v;
   std::vector<long long> empty;
 
