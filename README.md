@@ -53,6 +53,7 @@ AtCoder などの競技プログラミングで使用する C++ テンプレー�
 
 ## 未検証ライブラリ (unverified)
 動作確認済みですが、検証中のため `unverified/` ディレクトリに配置されているライブラリ群です。各ファイルと同階層に使用例を示す `_Example.cpp` があります。
+- [Parser.cpp](file:///C:/Users/yurina256/Desktop/atcoder/lib/unverified/Parser.cpp): 典型的な四則演算の数式をパース・評価する再帰下降構文解析のテンプレート
 - [SegTree2D.cpp](file:///C:/Users/yurina256/Desktop/atcoder/lib/unverified/SegTree2D.cpp): 2次元グリッド上の1点更新・矩形区間クエリを $O(\log H \log W)$ で処理する2次元セグメント木
 - [LCA.cpp](file:///C:/Users/yurina256/Desktop/atcoder/lib/unverified/LCA.cpp): 木における2頂点の共通する最深の祖先を $O(\log V)$ で求める最小共通祖先構造体
 - [SCC.cpp](file:///C:/Users/yurina256/Desktop/atcoder/lib/unverified/SCC.cpp): 有向グラフを強連結成分に分解しトポロジカルソートする強連結成分分解
