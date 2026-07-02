@@ -53,13 +53,17 @@ AtCoder などの競技プログラミングで使用する C++ テンプレー�
 
 ## 未検証ライブラリ (unverified)
 動作確認済みですが、検証中のため `unverified/` ディレクトリに配置されているライブラリ群です。各ファイルと同階層に使用例を示す `_Example.cpp` があります。
-- [Parser.cpp](file:///C:/Users/yurina256/Desktop/atcoder/lib/unverified/Parser.cpp): 典型的な四則演算の数式をパース・評価する再帰下降構文解析のテンプレート
-- [SegTree2D.cpp](file:///C:/Users/yurina256/Desktop/atcoder/lib/unverified/SegTree2D.cpp): 2次元グリッド上の1点更新・矩形区間クエリを $O(\log H \log W)$ で処理する2次元セグメント木
-- [LCA.cpp](file:///C:/Users/yurina256/Desktop/atcoder/lib/unverified/LCA.cpp): 木における2頂点の共通する最深の祖先を $O(\log V)$ で求める最小共通祖先構造体
-- [SCC.cpp](file:///C:/Users/yurina256/Desktop/atcoder/lib/unverified/SCC.cpp): 有向グラフを強連結成分に分解しトポロジカルソートする強連結成分分解
-- [TopologicalSort.cpp](file:///C:/Users/yurina256/Desktop/atcoder/lib/unverified/TopologicalSort.cpp): 有向グラフの依存関係を一列に並べるトポロジカルソート (閉路検出対応)
-- [Dinic.cpp](file:///C:/Users/yurina256/Desktop/atcoder/lib/unverified/Dinic.cpp): 最大流 (および最小カット) を $O(V^2 E)$ で求める Dinic 法
-- [MinCostFlow.cpp](file:///C:/Users/yurina256/Desktop/atcoder/lib/unverified/MinCostFlow.cpp): グラフに指定流量を送る最小費用を $O(F E \log V)$ で求める最小費用流 (Primal-Dual法)
-- [ZAlgorithm.cpp](file:///C:/Users/yurina256/Desktop/atcoder/lib/unverified/ZAlgorithm.cpp): 各 $i$ において文字列全体と $S[i..]$ の最長共通接頭辞の長さを $O(|S|)$ で求める Z-algorithm
-- [Manacher.cpp](file:///C:/Users/yurina256/Desktop/atcoder/lib/unverified/Manacher.cpp): 各文字を中心とする最長奇数長回文の半径を $O(|S|)$ で求める Manacher のアルゴリズム
+### 1. データ構造 (DataStructure)
+- [SegTree2D.cpp](file:///C:/Users/yurina256/Desktop/atcoder/lib/unverified/DataStructure/SegTree2D.cpp): 2次元グリッド上の1点更新・矩形区間クエリを $O(\log H \log W)$ で処理する2次元セグメント木
 
+### 2. グラフアルゴリズム (Graph)
+- [LCA.cpp](file:///C:/Users/yurina256/Desktop/atcoder/lib/unverified/Graph/LCA.cpp): 木における2頂点の共通する最深の祖先を $O(\log V)$ で求める最小共通祖先構造体
+- [SCC.cpp](file:///C:/Users/yurina256/Desktop/atcoder/lib/unverified/Graph/SCC.cpp): 有向グラフを強連結成分に分解しトポロジカルソートする強連結成分分解
+- [TopologicalSort.cpp](file:///C:/Users/yurina256/Desktop/atcoder/lib/unverified/Graph/TopologicalSort.cpp): 有向グラフの依存関係を一列に並べるトポロジカルソート (閉路検出対応)
+- [Dinic.cpp](file:///C:/Users/yurina256/Desktop/atcoder/lib/unverified/Graph/Dinic.cpp): 最大流 (および最小カット) を $O(V^2 E)$ で求める Dinic 法
+- [MinCostFlow.cpp](file:///C:/Users/yurina256/Desktop/atcoder/lib/unverified/Graph/MinCostFlow.cpp): グラフに指定流量を送る最小費用を $O(F E \log V)$ で求める最小費用流 (Primal-Dual法)
+
+### 3. 文字列アルゴリズム (String)
+- [Parser.cpp](file:///C:/Users/yurina256/Desktop/atcoder/lib/unverified/String/Parser.cpp): 典型的な四則演算の数式をパース・評価する再帰下降構文解析のテンプレート
+- [ZAlgorithm.cpp](file:///C:/Users/yurina256/Desktop/atcoder/lib/unverified/String/ZAlgorithm.cpp): 各 $i$ において文字列全体と $S[i..]$ の最長共通接頭辞の長さを $O(|S|)$ で求める Z-algorithm
+- [Manacher.cpp](file:///C:/Users/yurina256/Desktop/atcoder/lib/unverified/String/Manacher.cpp): 各文字を中心とする最長奇数長回文の半径を $O(|S|)$ で求める Manacher のアルゴリズム
