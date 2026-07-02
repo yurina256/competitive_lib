@@ -1,7 +1,7 @@
 #include <iostream>
 #include <vector>
-#include "lib/RangeFreqQuery.cpp"
-#include "lib/MergeSortTree.cpp"
+#include "RangeFreqQuery.cpp"
+#include "MergeSortTree.cpp"
 
 using namespace std;
 

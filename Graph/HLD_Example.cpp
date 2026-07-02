@@ -3,7 +3,7 @@
 #include <numeric>
 #include <algorithm>
 #include <atcoder/segtree>
-#include "lib/HLD.cpp"
+#include "HLD.cpp"
 
 using namespace std;
 

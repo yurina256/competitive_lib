@@ -1,0 +1,35 @@
+#pragma once
+#include <vector>
+#include <string>
+#include <utility>
+
+/**
+ * @brief ランレングス圧縮 (Run Length Encoding / RLE)
+ * 
+ * 文字列中の連続する同一文字を {文字, 連続する個数} のペアの配列に圧縮する。
+ * 
+ * 計算量: O(N)
+ * 
+ * @param s 圧縮対象の文字列
+ * @return std::vector<std::pair<char, long long>> 圧縮結果
+ */
+inline std::vector<std::pair<char, long long>> rle(const std::string& s) {
+  std::vector<std::pair<char, long long>> ans;
+  if (s.empty()) return ans;
+
+  long long n = s.size();
+  long long cnt = 1;
+  char c = s[0];
+
+  for (int i = 1; i < n; i++) {
+    if (c != s[i]) {
+      ans.push_back({c, cnt});
+      cnt = 1;
+      c = s[i];
+    } else {
+      cnt++;
+    }
+  }
+  ans.push_back({c, cnt});
+  return ans;
+}
