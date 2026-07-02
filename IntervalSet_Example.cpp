@@ -42,3 +42,28 @@ int main() {
 
     return 0;
 }
+
+/*
+出力結果:
+=== 1. 点クエリの確認 ===
+x = 4 does not belong to any interval.
+x = 5 belongs to interval [5, 8] with val = 'C'
+x = 8 belongs to interval [5, 8] with val = 'C'
+x = 9 does not belong to any interval.
+x = 10 belongs to interval [10, 14] with val = 'A'
+x = 14 belongs to interval [10, 14] with val = 'A'
+x = 15 belongs to interval [15, 25] with val = 'B'
+x = 20 belongs to interval [15, 25] with val = 'B'
+x = 25 belongs to interval [15, 25] with val = 'B'
+x = 26 does not belong to any interval.
+
+=== 2. 全ての区間の出力 ===
+[5, 8] -> 'C'
+[10, 14] -> 'A'
+[15, 25] -> 'B'
+
+=== 3. [12, 18] を削除後の全区間 ===
+[5, 8] -> 'C'
+[10, 11] -> 'A'
+[19, 25] -> 'B'
+*/

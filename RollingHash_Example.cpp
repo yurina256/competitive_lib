@@ -53,3 +53,17 @@ int main() {
 
     return 0;
 }
+
+/*
+出力結果の例 (※ハッシュ基数は実行毎にランダムに決定されるため、ハッシュ値は実行ごとに変化します):
+String: abracadabra (Length: 11)
+Hash of s[0, 4) ('abra'): 19041690926404990
+Hash of s[7, 11) ('abra'): 19041690926404990
+-> Same hash! (Correct)
+
+LCP of s[0, 11) and s[7, 11): 4 (Expected: 4, since 'abra' is prefix of 'abracadabra')
+
+Hash of connected 'abc' + 'def': 2031898196279819057
+Hash of constructed 'abcdef':   2031898196279819057
+-> Connection hashes match successfully!
+*/

@@ -208,3 +208,25 @@ int main() {
 
   return 0;
 }
+
+/*
+出力結果:
+=== 1. 基本的な木機能 ===
+LCA of 3 and 4: 1 (Expected: 1)
+LCA of 3 and 2: 0 (Expected: 0)
+Distance between 3 and 4: 2 (Expected: 2)
+Distance between 3 and 2: 3 (Expected: 3)
+
+=== 2. 頂点属性パスクエリ & 部分木クエリ ===
+Path sum (3 to 2): 100 (Expected: 100)
+Update vertex 1 value to 100
+Path sum (3 to 2) after update: 180 (Expected: 180)
+Subtree sum of vertex 1: 190 (Expected: 190)
+
+=== 3. 辺属性パスクエリ ===
+Edge path sum (3 to 2): 9 (Expected: 9)
+
+=== 4. 有向パスクエリ (非可換: 一次関数の順序付き合成) ===
+Composite result (3 to 2): y = 210x + 65 (Expected: y = 210x + 65)
+Composite result (2 to 3): y = 210x + 274 (Expected: y = 210x + 274)
+*/
