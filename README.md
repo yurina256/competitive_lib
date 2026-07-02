@@ -67,3 +67,9 @@ AtCoder などの競技プログラミングで使用する C++ テンプレー�
 - [Parser.cpp](file:///C:/Users/yurina256/Desktop/atcoder/lib/unverified/String/Parser.cpp): 典型的な四則演算の数式をパース・評価する再帰下降構文解析のテンプレート
 - [ZAlgorithm.cpp](file:///C:/Users/yurina256/Desktop/atcoder/lib/unverified/String/ZAlgorithm.cpp): 各 $i$ において文字列全体と $S[i..]$ の最長共通接頭辞の長さを $O(|S|)$ で求める Z-algorithm
 - [Manacher.cpp](file:///C:/Users/yurina256/Desktop/atcoder/lib/unverified/String/Manacher.cpp): 各文字を中心とする最長奇数長回文の半径を $O(|S|)$ で求める Manacher のアルゴリズム
+
+### 4. 幾何学 (Geometry)
+- [Geometry.cpp](file:///C:/Users/yurina256/Desktop/atcoder/lib/unverified/Geometry/Geometry.cpp): 点・直線・円などの基本オブジェクト定義、CCW、五心 (重心・内心・外心・垂心・傍心) や凸包を処理する幾何ライブラリ
+- [Geometry3D.cpp](file:///C:/Users/yurina256/Desktop/atcoder/lib/unverified/Geometry/Geometry3D.cpp): 3次元空間における点・直線・線分・平面オブジェクトの定義、射影、点と直線の最短距離などを処理する3次元幾何ライブラリ
+
+
