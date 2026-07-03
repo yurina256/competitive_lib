@@ -22,6 +22,8 @@ AtCoder などの競技プログラミングで使用する C++ テンプレー�
 - [IntervalSet.cpp](file:///C:/Users/yurina256/Desktop/atcoder/lib/DataStructure/IntervalSet.cpp): 重複しない複数の区間を `std::set` で統合しながら効率的に管理するデータ構造
 - [RangeFreqQuery.cpp](file:///C:/Users/yurina256/Desktop/atcoder/lib/DataStructure/RangeFreqQuery.cpp): 特定の値が指定された区間内に何個出現するかを $O(\log N)$ で取得するデータ構造
 - [Mo.cpp](file:///C:/Users/yurina256/Desktop/atcoder/lib/DataStructure/Mo.cpp): クエリを平方分割して走査順をソートすることで状態遷移を高速化するクエリ平方分割アルゴリズム
+- [ordered_set.cpp](file:///home/yurina256/Desktop/atcoder/lib/DataStructure/ordered_set.cpp): 任意の順位の要素取得や指定値未満の要素数を $O(\log N)$ で取得できる順序付き集合 (Policy-Based Data Structure)
+
 
 ### 2. グラフアルゴリズム (Graph)
 - [Dijkstra.cpp](file:///C:/Users/yurina256/Desktop/atcoder/lib/Graph/Dijkstra.cpp): 単一始点最短経路を $O((E + V) \log V)$ で求めるダイクストラ法
