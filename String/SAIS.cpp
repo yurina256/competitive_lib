@@ -3,6 +3,7 @@
 #include <string>
 #include <algorithm>
 #include <numeric>
+#include <utility>
 #include <cassert>
 
 namespace sais_impl {
