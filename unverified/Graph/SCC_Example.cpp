@@ -25,3 +25,14 @@ int main() {
 
     return 0;
 }
+
+/*
+出力結果:
+=== SCC Example ===
+Component of 0: 0
+Component of 1: 0
+Component of 2: 0
+Component of 3: 1
+scc[0] == scc[2]: true (Expected: true)
+scc[2] == scc[3]: false (Expected: false)
+*/

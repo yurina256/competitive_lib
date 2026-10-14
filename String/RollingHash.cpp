@@ -5,6 +5,8 @@
 #include <random>
 #include <algorithm>
 
+using ll = long long;
+
 /**
  * @brief 安全な Rolling Hash (ローリングハッシュ)
  *
@@ -47,10 +49,10 @@ struct RollingHash {
     return base;
   }
 
-  int len;
+  ll len;
   std::vector<ull> hashed, power;
 
-  static constexpr ull mask(int a) { return (1ULL << a) - 1; }
+  static constexpr ull mask(ll a) { return (1ULL << a) - 1; }
 
   /**
    * @brief a * b % (2^61 - 1) を行う高速な剰余乗算
@@ -76,7 +78,7 @@ struct RollingHash {
     hashed.assign(len + 1, 0);
     power.assign(len + 1, 0);
     power[0] = 1;
-    for (int i = 0; i < len; i++) {
+    for (ll i = 0; i < len; i++) {
       power[i + 1] = mul(power[i], base);
       hashed[i + 1] = mul(hashed[i], base) + s[i];
       if (hashed[i + 1] >= mod) hashed[i + 1] -= mod;
@@ -88,7 +90,7 @@ struct RollingHash {
    * @param l 左端インデックス (0-indexed, 閉)
    * @param r 右端インデックス (0-indexed, 開)
    */
-  ull get(int l, int r) const {
+  ull get(ll l, ll r) const {
     if (l >= r) return 0;
     ull ret = hashed[r] + mod - mul(hashed[l], power[r - l]);
     if (ret >= mod) ret -= mod;
@@ -98,7 +100,7 @@ struct RollingHash {
   /**
    * @brief 2つのハッシュ値 h1 (長さ不明) と h2 (長さ h2len) を連結したハッシュ値を得る (O(1))
    */
-  ull connect(ull h1, ull h2, int h2len) const {
+  ull connect(ull h1, ull h2, ll h2len) const {
     ull ret = mul(h1, power[h2len]) + h2;
     if (ret >= mod) ret -= mod;
     return ret;
@@ -114,17 +116,17 @@ struct RollingHash {
     RollingHash result = *this;
     ull base = get_base();
 
-    int original_len = result.len;
+    ll original_len = result.len;
     result.len += other.len;
 
     result.power.resize(result.len + 1);
-    for (int i = original_len; i < result.len; i++) {
+    for (ll i = original_len; i < result.len; i++) {
       result.power[i + 1] = result.mul(result.power[i], base);
     }
 
     ull h1 = result.get(0, original_len);
     result.hashed.resize(result.len + 1);
-    for (int i = 1; i <= other.len; i++) {
+    for (ll i = 1; i <= other.len; i++) {
       ull h2 = other.get(0, i);
       ull connected_hash = result.mul(h1, result.power[i]) + h2;
       if (connected_hash >= mod) connected_hash -= mod;
@@ -135,13 +137,13 @@ struct RollingHash {
 
   /**
    * @brief 自身と b の指定した区間同士の最長共通接頭辞 (LCP) の長さを求める (O(log N))
-   * @return int LCPの長さ
+   * @return ll LCPの長さ
    */
-  int LCP(const RollingHash& b, int l1, int r1, int l2, int r2) const {
-    int max_len = std::min(r1 - l1, r2 - l2);
-    int low = 0, high = max_len + 1;
+  ll LCP(const RollingHash& b, ll l1, ll r1, ll l2, ll r2) const {
+    ll max_len = std::min(r1 - l1, r2 - l2);
+    ll low = 0, high = max_len + 1;
     while (high - low > 1) {
-      int mid = (low + high) / 2;
+      ll mid = (low + high) / 2;
       if (get(l1, l1 + mid) == b.get(l2, l2 + mid)) low = mid;
       else
         high = mid;

@@ -3,6 +3,8 @@
 #include <algorithm>
 #include <utility>
 
+using ll = long long;
+
 /**
  * @brief Heavy-Light Decomposition (Heavy-Light 分解 / HLD)
  *
@@ -19,28 +21,28 @@
  * @date 2026.6.22 23:55
  */
 struct HeavyLightDecomposition {
-  int n;                            // 頂点数
-  std::vector<std::vector<int>> g;  // 隣接リスト
-  std::vector<int> sz;              // 部分木サイズ
-  std::vector<int> in;              // 行きがけ順インデックス（1次元配列上の位置）
-  std::vector<int> out;             // 帰りがけ順インデックス（部分木の終了）
-  std::vector<int> head;            // 頂点 v が属する重パスの先頭頂点
-  std::vector<int> parent;          // 親頂点
-  std::vector<int> depth;           // 根からの深さ
-  int time;                         // 行きがけ順カウント用
+  ll n;                            // 頂点数
+  std::vector<std::vector<ll>> g;  // 隣接リスト
+  std::vector<ll> sz;              // 部分木サイズ
+  std::vector<ll> in;              // 行きがけ順インデックス（1次元配列上の位置）
+  std::vector<ll> out;             // 帰りがけ順インデックス（部分木の終了）
+  std::vector<ll> head;            // 頂点 v が属する重パスの先頭頂点
+  std::vector<ll> parent;          // 親頂点
+  std::vector<ll> depth;           // 根からの深さ
+  ll time;                         // 行きがけ順カウント用
 
   /**
    * @brief コンストラクタ
    * @param n 頂点数
    */
-  HeavyLightDecomposition(int n) : n(n), g(n), sz(n), in(n), out(n), head(n), parent(n), depth(n), time(0) {}
+  HeavyLightDecomposition(ll n) : n(n), g(n), sz(n), in(n), out(n), head(n), parent(n), depth(n), time(0) {}
 
   /**
    * @brief 無向辺の追加 (O(1))
    * @param u 頂点番号1 (0-indexed)
    * @param v 頂点番号2 (0-indexed)
    */
-  void add_edge(int u, int v) {
+  void add_edge(ll u, ll v) {
     g[u].push_back(v);
     g[v].push_back(u);
   }
@@ -49,7 +51,7 @@ struct HeavyLightDecomposition {
    * @brief HLDの構築を行う (O(N))
    * @param root 根とする頂点の番号 (デフォルト: 0)
    */
-  void build(int root = 0) {
+  void build(ll root = 0) {
     time = 0;
     dfs_sz(root, -1, 0);
     dfs_hld(root, -1, root);
@@ -58,13 +60,13 @@ struct HeavyLightDecomposition {
   /**
    * @brief 頂点属性パスクエリ用: 頂点 u と v の間のパスをいくつかの半開区間 [l, r) に分解し、関数 f に渡す (O(log N))
    *
-   * @tparam F 処理用関数オブジェクト (引数は (int l, int r))
+   * @tparam F 処理用関数オブジェクト (引数は (ll l, ll r))
    * @param u 頂点番号
    * @param v 頂点番号
    * @param f 各区間に対して実行する関数 (引数は半開区間 [l, r))
    */
   template <typename F>
-  void process_path_vertex(int u, int v, F f) {
+  void process_path_vertex(ll u, ll v, F f) {
     while (head[u] != head[v]) {
       if (depth[head[u]] > depth[head[v]]) std::swap(u, v);
       f(in[head[v]], in[v] + 1);
@@ -79,13 +81,13 @@ struct HeavyLightDecomposition {
    *
    * 頂点属性クエリと異なり、LCA (最深共通祖先) に対応する頂点位置は辺属性に含まれないため除外します。
    *
-   * @tparam F 処理用関数オブジェクト (引数は (int l, int r))
+   * @tparam F 処理用関数オブジェクト (引数は (ll l, ll r))
    * @param u 頂点番号
    * @param v 頂点番号
    * @param f 各区間に対して実行する関数 (引数は半開区間 [l, r))
    */
   template <typename F>
-  void process_path_edge(int u, int v, F f) {
+  void process_path_edge(ll u, ll v, F f) {
     while (head[u] != head[v]) {
       if (depth[head[u]] > depth[head[v]]) std::swap(u, v);
       f(in[head[v]], in[v] + 1);
@@ -104,17 +106,17 @@ struct HeavyLightDecomposition {
    * 行列積や一次関数の合成など、演算の順序が重要な（非可換な）パスクエリを処理する際に使用します。
    * パスは u -> LCA (上り) と、LCA -> v (下り) に分解されます。
    *
-   * @tparam F1 上りパス処理用関数オブジェクト (引数は (int l, int r))
-   * @tparam F2 下りパス処理用関数オブジェクト (引数は (int l, int r))
+   * @tparam F1 上りパス処理用関数オブジェクト (引数は (ll l, ll r))
+   * @tparam F2 下りパス処理用関数オブジェクト (引数は (ll l, ll r))
    * @param u 始点
    * @param v 終点
    * @param f_up 上りパスに対する処理 (始点側からLCA側へ向かう区間)
    * @param f_down 下りパスに対する処理 (LCA側から終点側へ向かう区間)
    */
   template <typename F1, typename F2>
-  void process_directed_path(int u, int v, F1 f_up, F2 f_down) {
-    std::vector<std::pair<int, int>> up_paths;
-    std::vector<std::pair<int, int>> down_paths;
+  void process_directed_path(ll u, ll v, F1 f_up, F2 f_down) {
+    std::vector<std::pair<ll, ll>> up_paths;
+    std::vector<std::pair<ll, ll>> down_paths;
     while (head[u] != head[v]) {
       if (depth[head[u]] > depth[head[v]]) {
         up_paths.push_back({in[head[u]], in[u] + 1});
@@ -145,9 +147,9 @@ struct HeavyLightDecomposition {
    * @brief 部分木クエリ用: 頂点 v の部分木全体に対応する1次元配列上の半開区間 [l, r) を取得する (O(1))
    *
    * @param v 頂点番号
-   * @return std::pair<int, int> 部分木に対応する半開区間 {l, r}
+   * @return std::pair<ll, ll> 部分木に対応する半開区間 {l, r}
    */
-  std::pair<int, int> get_subtree(int v) {
+  std::pair<ll, ll> get_subtree(ll v) {
     return {in[v], out[v]};
   }
 
@@ -156,9 +158,9 @@ struct HeavyLightDecomposition {
    *
    * @param u 頂点番号
    * @param v 頂点番号
-   * @return int LCA の頂点番号
+   * @return ll LCA の頂点番号
    */
-  int lca(int u, int v) {
+  ll lca(ll u, ll v) {
     while (head[u] != head[v]) {
       if (depth[head[u]] > depth[head[v]]) std::swap(u, v);
       v = parent[head[v]];
@@ -171,9 +173,9 @@ struct HeavyLightDecomposition {
    *
    * @param u 頂点番号
    * @param v 頂点番号
-   * @return int 距離
+   * @return ll 距離
    */
-  int distance(int u, int v) {
+  ll distance(ll u, ll v) {
     return depth[u] + depth[v] - 2 * depth[lca(u, v)];
   }
 
@@ -182,19 +184,19 @@ struct HeavyLightDecomposition {
    * 
    * @param u 頂点番号1
    * @param v 頂点番号2
-   * @return int 子（深い方）の頂点番号
+   * @return ll 子（深い方）の頂点番号
    */
-  int get_child(int u, int v) const {
+  ll get_child(ll u, ll v) const {
     return depth[u] > depth[v] ? u : v;
   }
 
  private:
-  void dfs_sz(int v, int p, int d) {
+  void dfs_sz(ll v, ll p, ll d) {
     parent[v] = p;
     depth[v] = d;
     sz[v] = 1;
     if (!g[v].empty() && g[v][0] == p) std::swap(g[v][0], g[v].back());
-    for (int& to : g[v]) {
+    for (ll& to : g[v]) {
       if (to == p) continue;
       dfs_sz(to, v, d + 1);
       sz[v] += sz[to];
@@ -202,13 +204,13 @@ struct HeavyLightDecomposition {
     }
   }
 
-  void dfs_hld(int v, int p, int h) {
+  void dfs_hld(ll v, ll p, ll h) {
     head[v] = h;
     in[v] = time++;
     if (!g[v].empty() && g[v][0] != p) {
       dfs_hld(g[v][0], v, h);  // 重い子ノードは同じ head を引き継ぐ
     }
-    for (int to : g[v]) {
+    for (ll to : g[v]) {
       if (to == p || to == g[v][0]) continue;
       dfs_hld(to, v, to);  // 軽い子ノードは自分が新しい head になる
     }

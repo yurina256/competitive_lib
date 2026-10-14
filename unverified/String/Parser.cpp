@@ -3,6 +3,8 @@
 #include <cctype>
 #include <stdexcept>
 
+using ll = long long;
+
 /**
  * @brief 再帰下降構文解析 (Recursive Descent Parsing) のテンプレート
  * 
@@ -17,7 +19,7 @@
  */
 struct Parser {
   std::string s;
-  int pos;
+  ll pos;
 
   Parser(const std::string& s) : s(s), pos(0) {}
 
@@ -25,7 +27,7 @@ struct Parser {
    * @brief 現在の文字を先読みする (ポインタは進めない)
    */
   char peek() const {
-    if (pos >= (int)s.size()) return '\0';
+    if (pos >= (ll)s.size()) return '\0';
     return s[pos];
   }
 
@@ -49,8 +51,8 @@ struct Parser {
   /**
    * @brief 式 (expr) のパース
    */
-  long long expr() {
-    long long val = term();
+  ll expr() {
+    ll val = term();
     while (true) {
       if (peek() == '+') {
         next();
@@ -68,15 +70,15 @@ struct Parser {
   /**
    * @brief 項 (term) のパース
    */
-  long long term() {
-    long long val = factor();
+  ll term() {
+    ll val = factor();
     while (true) {
       if (peek() == '*') {
         next();
         val *= factor();
       } else if (peek() == '/') {
         next();
-        long long div = factor();
+        ll div = factor();
         if (div == 0) throw std::runtime_error("Division by zero");
         val /= div;
       } else {
@@ -89,10 +91,10 @@ struct Parser {
   /**
    * @brief 因子 (factor) のパース
    */
-  long long factor() {
+  ll factor() {
     if (peek() == '(') {
       next(); // '(' を消費
-      long long val = expr();
+      ll val = expr();
       consume(')'); // ')' を消費
       return val;
     }
@@ -102,8 +104,8 @@ struct Parser {
   /**
    * @brief 数値 (number) のパース
    */
-  long long number() {
-    long long val = 0;
+  ll number() {
+    ll val = 0;
     if (!std::isdigit(peek())) {
       throw std::runtime_error("Digit expected");
     }

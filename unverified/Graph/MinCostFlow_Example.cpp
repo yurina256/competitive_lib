@@ -24,3 +24,9 @@ int main() {
 
     return 0;
 }
+
+/*
+出力結果:
+=== Min Cost Flow Example ===
+Min Cost for flow 2: 6 (Expected: 6)
+*/

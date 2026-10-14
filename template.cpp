@@ -1,3 +1,4 @@
+// AI Gen Lib -> https://github.com/yurina256/competitive_lib
 #include <bits/stdc++.h>
 #include <atcoder/all>
 #include <ext/pb_ds/assoc_container.hpp>
@@ -5,14 +6,19 @@
 using namespace __gnu_pbds;
 using namespace std;
 using namespace atcoder;
+// using mint = modint1000000007;
+// constexpr ll mod = 1000000007;
 using mint = modint998244353;
+constexpr long long mod = 998244353;
 #define rep(i, n) for (int i = 0; i < (int)(n); i++)
 #define rep1(i, n) for (int i = 1; i < (int)(n); i++)
 #define rrep(i, n) for (int i = (int)(n) - 1; i >= 0; i--)
-#define int long long
+#define rrep1(i, n) for (int i = (int)(n) - 1; i >= 1; i--)
 #define ll long long
 #define double long double
 #define ull unsigned long long
+#define sll __int128_t
+#define sull __uint128_t
 #define ALL(v) (v).begin(), (v).end()
 #define NP next_permutation
 #define PLL pair<long long, long long>
@@ -24,9 +30,10 @@ using mint = modint998244353;
 #define MPLL map<long long, long long>
 #define SP fixed << setprecision(12)
 #define hashmap unordered_set
-
+#define popcount __builtin_popcountll
+template <class T>
+using rev_priority_queue = std::priority_queue<T, std::vector<T>, std::greater<T>>;
 constexpr ll inf = 4001001001001001001ll;
-constexpr ll mod = /* 1000000007; //*/ 998244353;
 constexpr double pi = 3.141592653589793;
 constexpr double eps = 0.00000000001;
 vector<ll> d8x = {1, 1, 0, -1, -1, -1, 0, 1};
@@ -80,16 +87,47 @@ template <typename T>
 void pr_single(const T& x) {
   if constexpr (requires { x.val(); }) cout << x.val();
   else if constexpr (requires { typename T::value_type; } && !requires { x.substr(0); }) {
+    using elem_type = typename T::value_type;
+    constexpr bool is_container_of_container =
+        requires { typename elem_type::value_type; } &&
+        !requires(elem_type e) { e.substr(0); };
     for (int i = 0; i < (int)x.size(); i++) {
       pr_single(x[i]);
-      if (i != (int)x.size() - 1) cout << " ";
+      if (i != (int)x.size() - 1) {
+        if constexpr (is_container_of_container) {
+          cout << "\n";
+        } else {
+          cout << " ";
+        }
+      }
     }
   } else if constexpr (requires { x.first; x.second; }) {
     pr_single(x.first);
     cout << " ";
     pr_single(x.second);
-  } else
+  } else if constexpr (is_same_v<T, __int128_t> || is_same_v<T, __uint128_t>) {
+    using unsigned_type = __uint128_t;
+    unsigned_type value;
+    bool negative = false;
+    if constexpr (is_same_v<T, __int128_t>) {
+      negative = x < 0;
+      value = negative ? static_cast<unsigned_type>(-(x + 1)) + 1
+                       : static_cast<unsigned_type>(x);
+    } else {
+      value = x;
+    }
+
+    string digits;
+    do {
+      digits.push_back('0' + static_cast<int>(value % 10));
+      value /= 10;
+    } while (value > 0);
+    if (negative) digits.push_back('-');
+    reverse(ALL(digits));
+    cout << digits;
+  } else if constexpr (requires { cout << x; }) {
     cout << x;
+  }
 }
 void pr() { cout << endl; }
 template <typename Head, typename... Tail>
@@ -110,6 +148,14 @@ string YES(bool x) {
   if (x) return "YES\n";
   return "NO\n";
 }
+ll Digit(ll n) {
+  ll ans = 0;
+  while (n > 0) {
+    n /= 10;
+    ans++;
+  }
+  return ans;
+}
 bool in_range(int l, int x, int r) {  // 閉区間
   return ((l <= x) && (x <= r)) || ((r <= x) && (x <= l));
 }
@@ -117,9 +163,22 @@ int div_ceil(int x, int y) {
   return (x + y - 1) / y;
 }
 void yakubun(ll& a, ll& b) {
-  ll g = gcd(a, b);
+  if (a < 0) {
+    a = -a;
+    b = -b;
+  }
+  if (a == 0) {
+    b = 1;
+    return;
+  }
+  if (b == 0) {
+    a = 1;
+    return;
+  }
+  ll g = gcd(abs(a), abs(b));
   a /= g;
   b /= g;
+  // pr(a, b);
 }
 void swap(pair<ll, ll>& p) {
   auto [a, b] = p;
@@ -140,5 +199,53 @@ ll _pow(ll x, ll n) {
   }
   return res;
 }
-signed main(void) {
+ll bs(ll l, ll r, function<bool(ll)> f) {  // l-> false, r->true
+  while (r - l > 1) {
+    ll mid = l + (r - l) / 2;
+    if (f(mid)) r = mid;
+    else
+      l = mid;
+  }
+  return r;
+}
+vector<pair<ll, ll>> p_fact(int N) {  // {素因数,指数}
+  vector<pair<ll, ll>> res;
+  for (int a = 2; a * a <= N; ++a) {
+    if (N % a != 0) continue;
+    int ex = 0;  // 指数
+
+    // 割れる限り割り続ける
+    while (N % a == 0) {
+      ++ex;
+      N /= a;
+    }
+
+    // その結果を push
+    res.push_back({a, ex});
+  }
+
+  // 最後に残った数について
+  if (N != 1) res.push_back({N, 1});
+  return res;
+}
+template <typename T>
+std::vector<std::vector<T>> flip(const std::vector<std::vector<T>>& v) {
+  if (v.empty() || v[0].empty()) return {};
+
+  size_t rows = v.size();
+  size_t cols = v[0].size();
+
+  // 縦横のサイズを入れ替えた二次元配列を初期化
+  std::vector<std::vector<T>> transposed(cols, std::vector<T>(rows));
+
+  for (size_t i = 0; i < rows; ++i) {
+    for (size_t j = 0; j < cols; ++j) {
+      transposed[j][i] = v[i][j];
+    }
+  }
+
+  return transposed;
+}
+//==================Template END===========================
+signed main() {
 }

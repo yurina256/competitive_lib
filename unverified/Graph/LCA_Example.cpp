@@ -24,3 +24,11 @@ int main() {
 
     return 0;
 }
+
+/*
+出力結果:
+=== LCA Example ===
+LCA of 3 and 4: 2 (Expected: 2)
+LCA of 1 and 3: 0 (Expected: 0)
+Distance between 1 and 3: 3 (Expected: 3)
+*/

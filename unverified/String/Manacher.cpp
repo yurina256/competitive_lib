@@ -2,6 +2,8 @@
 #include <vector>
 #include <string>
 
+using ll = long long;
+
 /**
  * @brief Manacher's Algorithm
  * 
@@ -12,16 +14,16 @@
  * 計算量: O(|S|)
  * 
  * @param s 対象の文字列
- * @return std::vector<int> 回文半径の配列
+ * @return std::vector<ll> 回文半径の配列
  */
-inline std::vector<int> manacher(const std::string& s) {
-  int n = s.size();
-  std::vector<int> R(n);
-  int i = 0, j = 0;
+inline std::vector<ll> manacher(const std::string& s) {
+  ll n = s.size();
+  std::vector<ll> R(n);
+  ll i = 0, j = 0;
   while (i < n) {
     while (i - j >= 0 && i + j < n && s[i - j] == s[i + j]) j++;
     R[i] = j;
-    int k = 1;
+    ll k = 1;
     while (i - k >= 0 && k + R[i - k] < j) {
       R[i + k] = R[i - k];
       k++;

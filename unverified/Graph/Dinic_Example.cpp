@@ -20,3 +20,9 @@ int main() {
 
     return 0;
 }
+
+/*
+出力結果:
+=== Dinic Maximum Flow Example ===
+Max Flow from 0 to 3: 20 (Expected: 20)
+*/

@@ -1,43 +1,89 @@
 #include <iostream>
 #include <vector>
+#include <algorithm>
 #include "EulerTour.cpp"
 
 using namespace std;
 
 int main() {
-    cout << "=== Euler Tour Example ===" << endl;
+  cout << "=== Euler Tour Example ===" << endl;
 
-    // 木構造の作成
-    // 0 - 1
-    // 0 - 2
-    // 2 - 3
-    int n = 4;
-    vector<vector<long long>> g(n);
-    g[0].push_back(1); g[1].push_back(0);
-    g[0].push_back(2); g[2].push_back(0);
-    g[2].push_back(3); g[3].push_back(2);
+  // 木構造の作成
+  // 0 - 1
+  // 0 - 2
+  // 2 - 3
+  int n = 4;
+  vector<vector<long long>> g(n);
+  g[0].push_back(1);
+  g[1].push_back(0);
+  g[0].push_back(2);
+  g[2].push_back(0);
+  g[2].push_back(3);
+  g[3].push_back(2);
 
-    EulerTour et(g, 0);
+  EulerTour et(g, 0);
 
-    cout << "Vertex | In Index (index) | Out Index (rev_index) | Depth" << endl;
-    cout << "--------------------------------------------------------" << endl;
-    for (int i = 0; i < n; ++i) {
-        cout << i << "      | " << et.index[i] << "                | " << et.rev_index[i] << "                    | " << et.d[i] << endl;
+  cout << "Vertex | In Index (index) | Out Index (rev_index) | Depth" << endl;
+  cout << "--------------------------------------------------------" << endl;
+  for (int i = 0; i < n; ++i) {
+    cout << i << "      | " << et.index[i] << "                | " << et.rev_index[i] << "                    | " << et.d[i] << endl;
+  }
+  cout << endl;
+
+  // 部分木クエリは [index[v], rev_index[v]) の区間クエリに対応します
+  cout << "Subtree query range for vertex 2:" << endl;
+  cout << "Range: [" << et.index[2] << ", " << et.rev_index[2] << ")" << endl;
+  cout << "Expected elements in subtree 2 (by index range): ";
+  for (int i = 0; i < n; ++i) {
+    if (et.index[i] >= et.index[2] && et.index[i] < et.rev_index[2]) {
+      cout << i << " ";
     }
-    cout << endl;
+  }
+  cout << endl;
 
-    // 部分木クエリは [index[v], rev_index[v]) の区間クエリに対応します
-    cout << "Subtree query range for vertex 2:" << endl;
-    cout << "Range: [" << et.index[2] << ", " << et.rev_index[2] << ")" << endl;
-    cout << "Expected elements in subtree 2 (by index range): ";
-    for (int i = 0; i < n; ++i) {
-        if (et.index[i] >= et.index[2] && et.index[i] < et.rev_index[2]) {
-            cout << i << " ";
-        }
+  // オイラーツアーで得た深さを使ったパスクエリの例
+  // 頂点値: 0 -> 10, 1 -> 20, 2 -> 30, 3 -> 40
+  // 3 -> 1 のパスは 3 -> 2 -> 0 -> 1
+  vector<long long> parent(n, -1);
+  for (int v = 0; v < n; ++v) {
+    for (long long to : g[v]) {
+      if (et.d[to] == et.d[v] - 1) {
+        parent[v] = to;
+        break;
+      }
     }
-    cout << endl;
+  }
 
-    return 0;
+  auto lca = [&](long long u, long long v) {
+    while (et.d[u] > et.d[v]) u = parent[u];
+    while (et.d[v] > et.d[u]) v = parent[v];
+    while (u != v) {
+      u = parent[u];
+      v = parent[v];
+    }
+    return u;
+  };
+
+  vector<long long> vertex_values = {10, 20, 30, 40};
+  auto path_sum = [&](long long u, long long v) {
+    long long ancestor = lca(u, v);
+    long long result = 0;
+    while (u != ancestor) {
+      result += vertex_values[u];
+      u = parent[u];
+    }
+    while (v != ancestor) {
+      result += vertex_values[v];
+      v = parent[v];
+    }
+    return result + vertex_values[ancestor];
+  };
+
+  cout << "Path query (3 to 1): " << path_sum(3, 1)
+       << " (Expected: 100)" << endl;
+  cout << endl;
+
+  return 0;
 }
 
 /*
@@ -52,5 +98,7 @@ Vertex | In Index (index) | Out Index (rev_index) | Depth
 
 Subtree query range for vertex 2:
 Range: [1, 4)
-Expected elements in subtree 2 (by index range): 2 3 
+Expected elements in subtree 2 (by index range): 2 3
+
+Path query (3 to 1): 100 (Expected: 100)
 */

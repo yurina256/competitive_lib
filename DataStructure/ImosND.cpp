@@ -3,6 +3,8 @@
 #include <cassert>
 #include <stdexcept>
 
+using ll = long long;
+
 /**
  * @brief 多次元いもす法 (Multi-dimensional Imos Method)
  * 
@@ -11,10 +13,10 @@
  * 各次元の半開区間 [L_i, R_i) に対する加算をサポートする。
  */
 struct ImosND {
-  int dims = 0;
-  std::vector<int> shape;
-  std::vector<int> stride;
-  std::vector<long long> v;
+  ll dims = 0;
+  std::vector<ll> shape;
+  std::vector<ll> stride;
+  std::vector<ll> v;
   bool is_built = false;
 
   ImosND() = default;
@@ -23,13 +25,13 @@ struct ImosND {
    * @brief コンストラクタ
    * @param shape 各次元のサイズ指定 (shape[i] は第 i 次元のサイズ)
    */
-  ImosND(const std::vector<int>& shape) : shape(shape), dims(shape.size()) {
-    for (int s : shape) {
+  ImosND(const std::vector<ll>& shape) : shape(shape), dims(shape.size()) {
+    for (ll s : shape) {
       assert(s >= 0);
     }
     stride.resize(dims);
-    long long total_size = 1;
-    for (int i = dims - 1; i >= 0; i--) {
+    ll total_size = 1;
+    for (ll i = dims - 1; i >= 0; i--) {
       stride[i] = total_size;
       total_size *= (shape[i] + 1);
     }
@@ -39,31 +41,31 @@ struct ImosND {
   /**
    * @brief 超長方形領域 [L_0, R_0) x [L_1, R_1) x ... に値 a を加算する (半開区間)
    */
-  void add(const std::vector<int>& L, const std::vector<int>& R, long long a) {
+  void add(const std::vector<ll>& L, const std::vector<ll>& R, ll a) {
     if (is_built) throw std::runtime_error("Cannot call add() after build()");
     assert(L.size() == (size_t)dims && R.size() == (size_t)dims);
 
     // 範囲チェックと、空領域なら早期リターン
-    for (int i = 0; i < dims; i++) {
+    for (ll i = 0; i < dims; i++) {
       assert(0 <= L[i] && L[i] <= R[i] && R[i] <= shape[i]);
       if (L[i] == R[i]) return;
     }
 
-    int num_corners = 1 << dims;
-    std::vector<int> cur_idx(dims);
-    for (int mask = 0; mask < num_corners; mask++) {
-      long long flat_idx = 0;
-      int popcount = 0;
-      for (int i = 0; i < dims; i++) {
+    ll num_corners = 1LL << dims;
+    std::vector<ll> cur_idx(dims);
+    for (ll mask = 0; mask < num_corners; mask++) {
+      ll flat_idx = 0;
+      ll popcount = 0;
+      for (ll i = 0; i < dims; i++) {
         if ((mask >> i) & 1) {
           cur_idx[i] = R[i];
           popcount++;
         } else {
           cur_idx[i] = L[i];
         }
-        flat_idx += (long long)cur_idx[i] * stride[i];
+        flat_idx += cur_idx[i] * stride[i];
       }
-      long long sign = (popcount & 1) ? -1 : 1;
+      ll sign = (popcount & 1) ? -1 : 1;
       v[flat_idx] += a * sign;
     }
   }
@@ -75,16 +77,16 @@ struct ImosND {
     if (is_built) throw std::runtime_error("Cannot call build() multiple times");
     is_built = true;
 
-    long long total_size = v.size();
-    for (int d = 0; d < dims; d++) {
-      int K = stride[d];
-      int S = shape[d] + 1;
-      int A = total_size / (S * K);
-      for (int a = 0; a < A; a++) {
-        int base = a * S * K;
-        for (int s = 0; s < S - 1; s++) {
-          int offset = base + s * K;
-          for (int k = 0; k < K; k++) {
+    ll total_size = v.size();
+    for (ll d = 0; d < dims; d++) {
+      ll K = stride[d];
+      ll S = shape[d] + 1;
+      ll A = total_size / (S * K);
+      for (ll a = 0; a < A; a++) {
+        ll base = a * S * K;
+        for (ll s = 0; s < S - 1; s++) {
+          ll offset = base + s * K;
+          for (ll k = 0; k < K; k++) {
             v[offset + k + K] += v[offset + k];
           }
         }
@@ -95,13 +97,13 @@ struct ImosND {
   /**
    * @brief 指定した座標の現在の値を取得する (0-indexed)
    */
-  long long get(const std::vector<int>& idx) const {
+  ll get(const std::vector<ll>& idx) const {
     if (!is_built) throw std::runtime_error("Cannot call get() before build()");
     assert(idx.size() == (size_t)dims);
-    long long flat_idx = 0;
-    for (int i = 0; i < dims; i++) {
+    ll flat_idx = 0;
+    for (ll i = 0; i < dims; i++) {
       assert(0 <= idx[i] && idx[i] < shape[i]);
-      flat_idx += (long long)idx[i] * stride[i];
+      flat_idx += idx[i] * stride[i];
     }
     return v[flat_idx];
   }

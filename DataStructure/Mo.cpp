@@ -5,6 +5,8 @@
 #include <cmath>
 #include <functional>
 
+using ll = long long;
+
 /**
  * @brief Mo's Algorithm (クエリ平方分割)
  * 
@@ -14,19 +16,19 @@
  * 計算量: O(N√Q + Q log Q)
  */
 struct Mo {
-  int n;
-  std::vector<std::pair<int, int>> query;
-  std::vector<int> ord;
-  std::vector<long long> ans;
-  int q = 0;
-  int bs = 0;
-  int x = 0, y = 0;       // 現在の区間ポインタ [x, y]
-  long long sigma = 0;    // 現在の区間の計算結果
+  ll n;
+  std::vector<std::pair<ll, ll>> query;
+  std::vector<ll> ord;
+  std::vector<ll> ans;
+  ll q = 0;
+  ll bs = 0;
+  ll x = 0, y = 0;       // 現在の区間ポインタ [x, y]
+  ll sigma = 0;          // 現在の区間の計算結果
 
-  std::function<void(long long&, int, int)> rplus;   // 右端を広げる (y++)
-  std::function<void(long long&, int, int)> lminus;  // 左端を広げる (x--)
-  std::function<void(long long&, int, int)> lplus;   // 左端を縮める (x++)
-  std::function<void(long long&, int, int)> rminus;  // 右端を縮める (y--)
+  std::function<void(ll&, ll, ll)> rplus;   // 右端を広げる (y++)
+  std::function<void(ll&, ll, ll)> lminus;  // 左端を広げる (x--)
+  std::function<void(ll&, ll, ll)> lplus;   // 左端を縮める (x++)
+  std::function<void(ll&, ll, ll)> rminus;  // 右端を縮める (y--)
 
   /**
    * @brief コンストラクタ
@@ -37,11 +39,11 @@ struct Mo {
    * @param lplus (sigma, x, y) 左端縮小時の更新関数
    * @param rminus (sigma, x, y) 右端縮小時の更新関数
    */
-  Mo(int n,
-     std::function<void(long long&, int, int)> rplus,
-     std::function<void(long long&, int, int)> lminus,
-     std::function<void(long long&, int, int)> lplus,
-     std::function<void(long long&, int, int)> rminus)
+  Mo(ll n,
+     std::function<void(ll&, ll, ll)> rplus,
+     std::function<void(ll&, ll, ll)> lminus,
+     std::function<void(ll&, ll, ll)> lplus,
+     std::function<void(ll&, ll, ll)> rminus)
       : n(n), rplus(rplus), lminus(lminus), lplus(lplus), rminus(rminus) {}
 
   /**
@@ -51,7 +53,7 @@ struct Mo {
    * @param sy 初期右端
    * @param sv 初期状態の値
    */
-  void set(int sx, int sy, long long sv) {
+  void set(ll sx, ll sy, ll sv) {
     x = sx;
     y = sy;
     sigma = sv;
@@ -60,29 +62,29 @@ struct Mo {
   /**
    * @brief クエリを登録する (0-indexed または 1-indexed)
    */
-  void insert(int l, int r) {
+  void insert(ll l, ll r) {
     query.push_back({l, r});
   }
 
   /**
    * @brief クエリをソートし、Moのアルゴリズムを実行する
-   * @return std::vector<long long> 各クエリに対する答えの配列
+   * @return std::vector<ll> 各クエリに対する答えの配列
    */
-  std::vector<long long> solve() {
+  std::vector<ll> solve() {
     q = query.size();
-    bs = n / std::max<int>(1, std::min<int>(n, std::sqrt(q)));
+    bs = n / std::max<ll>(1, std::min<ll>(n, std::sqrt(q)));
     ord.resize(q);
     std::iota(ord.begin(), ord.end(), 0);
     ans.resize(q);
     
-    std::sort(ord.begin(), ord.end(), [&](int a, int b) {
-      int ablock = query[a].first / bs;
-      int bblock = query[b].first / bs;
+    std::sort(ord.begin(), ord.end(), [&](ll a, ll b) {
+      ll ablock = query[a].first / bs;
+      ll bblock = query[b].first / bs;
       if (ablock != bblock) return ablock < bblock;
       return (ablock & 1) ? query[a].second > query[b].second : query[a].second < query[b].second;
     });
 
-    for (int i = 0; i < q; i++) {
+    for (ll i = 0; i < q; i++) {
       auto [tagl, tagr] = query[ord[i]];
       while (y < tagr) {
         y++;

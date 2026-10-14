@@ -6,13 +6,15 @@
 #include <utility>
 #include <cassert>
 
+using ll = long long;
+
 namespace sais_impl {
 
-inline std::vector<int> sa_naive(const std::vector<int>& s) {
-    int n = int(s.size());
-    std::vector<int> sa(n);
+inline std::vector<ll> sa_naive(const std::vector<ll>& s) {
+    ll n = ll(s.size());
+    std::vector<ll> sa(n);
     std::iota(sa.begin(), sa.end(), 0);
-    std::sort(sa.begin(), sa.end(), [&](int l, int r) {
+    std::sort(sa.begin(), sa.end(), [&](ll l, ll r) {
         if (l == r) return false;
         while (l < n && r < n) {
             if (s[l] != s[r]) return s[l] < s[r];
@@ -24,20 +26,20 @@ inline std::vector<int> sa_naive(const std::vector<int>& s) {
     return sa;
 }
 
-inline std::vector<int> sa_doubling(const std::vector<int>& s) {
-    int n = int(s.size());
-    std::vector<int> sa(n), rnk = s, tmp(n);
+inline std::vector<ll> sa_doubling(const std::vector<ll>& s) {
+    ll n = ll(s.size());
+    std::vector<ll> sa(n), rnk = s, tmp(n);
     std::iota(sa.begin(), sa.end(), 0);
-    for (int k = 1; k < n; k *= 2) {
-        auto cmp = [&](int x, int y) {
+    for (ll k = 1; k < n; k *= 2) {
+        auto cmp = [&](ll x, ll y) {
             if (rnk[x] != rnk[y]) return rnk[x] < rnk[y];
-            int rx = x + k < n ? rnk[x + k] : -1;
-            int ry = y + k < n ? rnk[y + k] : -1;
+            ll rx = x + k < n ? rnk[x + k] : -1;
+            ll ry = y + k < n ? rnk[y + k] : -1;
             return rx < ry;
         };
         std::sort(sa.begin(), sa.end(), cmp);
         tmp[sa[0]] = 0;
-        for (int i = 1; i < n; i++) {
+        for (ll i = 1; i < n; i++) {
             tmp[sa[i]] = tmp[sa[i - 1]] + (cmp(sa[i - 1], sa[i]) ? 1 : 0);
         }
         std::swap(tmp, rnk);
@@ -49,9 +51,9 @@ inline std::vector<int> sa_doubling(const std::vector<int>& s) {
 // Reference:
 // G. Nong, S. Zhang, and W. H. Chan,
 // Two Efficient Algorithms for Linear Time Suffix Array Construction
-template <int THRESHOLD_NAIVE = 10, int THRESHOLD_DOUBLING = 40>
-std::vector<int> sa_is(const std::vector<int>& s, int upper) {
-    int n = int(s.size());
+template <ll THRESHOLD_NAIVE = 10, ll THRESHOLD_DOUBLING = 40>
+std::vector<ll> sa_is(const std::vector<ll>& s, ll upper) {
+    ll n = ll(s.size());
     if (n == 0) return {};
     if (n == 1) return {0};
     if (n == 2) {
@@ -68,27 +70,27 @@ std::vector<int> sa_is(const std::vector<int>& s, int upper) {
         return sa_doubling(s);
     }
 
-    std::vector<int> sa(n);
+    std::vector<ll> sa(n);
     std::vector<bool> ls(n);
-    for (int i = n - 2; i >= 0; i--) {
+    for (ll i = n - 2; i >= 0; i--) {
         ls[i] = (s[i] == s[i + 1]) ? ls[i + 1] : (s[i] < s[i + 1]);
     }
-    std::vector<int> sum_l(upper + 1), sum_s(upper + 1);
-    for (int i = 0; i < n; i++) {
+    std::vector<ll> sum_l(upper + 1), sum_s(upper + 1);
+    for (ll i = 0; i < n; i++) {
         if (!ls[i]) {
             sum_s[s[i]]++;
         } else {
             sum_l[s[i] + 1]++;
         }
     }
-    for (int i = 0; i <= upper; i++) {
+    for (ll i = 0; i <= upper; i++) {
         sum_s[i] += sum_l[i];
         if (i < upper) sum_l[i + 1] += sum_s[i];
     }
 
-    auto induce = [&](const std::vector<int>& lms) {
+    auto induce = [&](const std::vector<ll>& lms) {
         std::fill(sa.begin(), sa.end(), -1);
-        std::vector<int> buf(upper + 1);
+        std::vector<ll> buf(upper + 1);
         std::copy(sum_s.begin(), sum_s.end(), buf.begin());
         for (auto d : lms) {
             if (d == n) continue;
@@ -96,31 +98,31 @@ std::vector<int> sa_is(const std::vector<int>& s, int upper) {
         }
         std::copy(sum_l.begin(), sum_l.end(), buf.begin());
         sa[buf[s[n - 1]]++] = n - 1;
-        for (int i = 0; i < n; i++) {
-            int v = sa[i];
+        for (ll i = 0; i < n; i++) {
+            ll v = sa[i];
             if (v >= 1 && !ls[v - 1]) {
                 sa[buf[s[v - 1]]++] = v - 1;
             }
         }
         std::copy(sum_l.begin(), sum_l.end(), buf.begin());
-        for (int i = n - 1; i >= 0; i--) {
-            int v = sa[i];
+        for (ll i = n - 1; i >= 0; i--) {
+            ll v = sa[i];
             if (v >= 1 && ls[v - 1]) {
                 sa[--buf[s[v - 1] + 1]] = v - 1;
             }
         }
     };
 
-    std::vector<int> lms_map(n + 1, -1);
-    int m = 0;
-    for (int i = 1; i < n; i++) {
+    std::vector<ll> lms_map(n + 1, -1);
+    ll m = 0;
+    for (ll i = 1; i < n; i++) {
         if (!ls[i - 1] && ls[i]) {
             lms_map[i] = m++;
         }
     }
-    std::vector<int> lms;
+    std::vector<ll> lms;
     lms.reserve(m);
-    for (int i = 1; i < n; i++) {
+    for (ll i = 1; i < n; i++) {
         if (!ls[i - 1] && ls[i]) {
             lms.push_back(i);
         }
@@ -129,18 +131,18 @@ std::vector<int> sa_is(const std::vector<int>& s, int upper) {
     induce(lms);
 
     if (m) {
-        std::vector<int> sorted_lms;
+        std::vector<ll> sorted_lms;
         sorted_lms.reserve(m);
-        for (int v : sa) {
+        for (ll v : sa) {
             if (lms_map[v] != -1) sorted_lms.push_back(v);
         }
-        std::vector<int> rec_s(m);
-        int rec_upper = 0;
+        std::vector<ll> rec_s(m);
+        ll rec_upper = 0;
         rec_s[lms_map[sorted_lms[0]]] = 0;
-        for (int i = 1; i < m; i++) {
-            int l = sorted_lms[i - 1], r = sorted_lms[i];
-            int end_l = (lms_map[l] + 1 < m) ? lms[lms_map[l] + 1] : n;
-            int end_r = (lms_map[r] + 1 < m) ? lms[lms_map[r] + 1] : n;
+        for (ll i = 1; i < m; i++) {
+            ll l = sorted_lms[i - 1], r = sorted_lms[i];
+            ll end_l = (lms_map[l] + 1 < m) ? lms[lms_map[l] + 1] : n;
+            ll end_r = (lms_map[r] + 1 < m) ? lms[lms_map[r] + 1] : n;
             bool same = true;
             if (end_l - l != end_r - r) {
                 same = false;
@@ -161,7 +163,7 @@ std::vector<int> sa_is(const std::vector<int>& s, int upper) {
         auto rec_sa =
             sa_is<THRESHOLD_NAIVE, THRESHOLD_DOUBLING>(rec_s, rec_upper);
 
-        for (int i = 0; i < m; i++) {
+        for (ll i = 0; i < m; i++) {
             sorted_lms[i] = lms[rec_sa[i]];
         }
         induce(sorted_lms);
@@ -186,16 +188,16 @@ std::vector<int> sa_is(const std::vector<int>& s, int upper) {
  * @date 2026.6.27
  * @tparam T 配列の要素の型 (文字列の場合は自動的に std::string から構築可能)
  */
-template <typename T = int>
+template <typename T = ll>
 struct SuffixArray {
-    int n;
-    std::vector<int> sa;    // 接尾辞配列 (sa[i] は辞書順で i 番目の接尾辞の開始インデックス)
-    std::vector<int> rnk;   // ランク配列 (rnk[i] は元の文字列 of i 文字目から始まる接尾辞の辞書順順位)
-    std::vector<int> lcp;   // LCP配列 (lcp[i] は sa[i] と sa[i+1] から始まる接尾辞の最長共通接頭辞の長さ。サイズは N-1)
+    ll n;
+    std::vector<ll> sa;    // 接尾辞配列 (sa[i] は辞書順で i 番目の接尾辞の開始インデックス)
+    std::vector<ll> rnk;   // ランク配列 (rnk[i] は元の文字列 of i 文字目から始まる接尾辞の辞書順順位)
+    std::vector<ll> lcp;   // LCP配列 (lcp[i] は sa[i] と sa[i+1] から始まる接尾辞の最長共通接頭辞の長さ。サイズは N-1)
 
     // LCPクエリ高速化のための Sparse Table
-    std::vector<std::vector<int>> st;
-    std::vector<int> lookup;
+    std::vector<std::vector<ll>> st;
+    std::vector<ll> lookup;
 
     SuffixArray() : n(0) {}
 
@@ -208,8 +210,8 @@ struct SuffixArray {
     SuffixArray(const std::string& s, bool build_rmq = false) {
         n = s.size();
         if (n == 0) return;
-        std::vector<int> s_int(n);
-        for (int i = 0; i < n; ++i) {
+        std::vector<ll> s_int(n);
+        for (ll i = 0; i < n; ++i) {
             s_int[i] = (unsigned char)s[i];
         }
         sa = sais_impl::sa_is(s_int, 255);
@@ -226,12 +228,12 @@ struct SuffixArray {
     SuffixArray(const std::vector<T>& s, bool build_rmq = false) {
         n = s.size();
         if (n == 0) return;
-        std::vector<int> idx(n);
+        std::vector<ll> idx(n);
         std::iota(idx.begin(), idx.end(), 0);
-        std::sort(idx.begin(), idx.end(), [&](int l, int r) { return s[l] < s[r]; });
-        std::vector<int> s_int(n);
-        int now = 0;
-        for (int i = 0; i < n; i++) {
+        std::sort(idx.begin(), idx.end(), [&](ll l, ll r) { return s[l] < s[r]; });
+        std::vector<ll> s_int(n);
+        ll now = 0;
+        for (ll i = 0; i < n; i++) {
             if (i && s[idx[i - 1]] != s[idx[i]]) now++;
             s_int[idx[i]] = now;
         }
@@ -246,32 +248,32 @@ struct SuffixArray {
      * @note この関数を呼ぶには、コンストラクタで build_rmq を true にしておく必要があります。
      * @param i 接尾辞の開始インデックス1
      * @param j 接尾辞の開始インデックス2
-     * @return int LCPの長さ
+     * @return ll LCPの長さ
      */
-    int get_lcp(int i, int j) const {
+    ll get_lcp(ll i, ll j) const {
         assert(!st.empty() && "Sparse Table is not initialized. Pass build_rmq = true in constructor.");
         if (i == j) return n - i;
-        int r1 = rnk[i], r2 = rnk[j];
+        ll r1 = rnk[i], r2 = rnk[j];
         if (r1 > r2) std::swap(r1, r2);
         // 区間 [r1, r2) における LCP の最小値を取得
-        int len = r2 - r1;
-        int k = lookup[len];
-        return std::min(st[k][r1], st[k][r2 - (1 << k)]);
+        ll len = r2 - r1;
+        ll k = lookup[len];
+        return std::min(st[k][r1], st[k][r2 - (1LL << k)]);
     }
 
 private:
     template <typename Container>
     void build_rnk_lcp(const Container& s) {
         rnk.resize(n);
-        for (int i = 0; i < n; ++i) {
+        for (ll i = 0; i < n; ++i) {
             rnk[sa[i]] = i;
         }
         lcp.assign(n - 1, 0);
-        int h = 0;
-        for (int i = 0; i < n; ++i) {
+        ll h = 0;
+        for (ll i = 0; i < n; ++i) {
             if (h > 0) h--;
             if (rnk[i] == 0) continue;
-            int j = sa[rnk[i] - 1];
+            ll j = sa[rnk[i] - 1];
             for (; j + h < n && i + h < n; ++h) {
                 if (s[j + h] != s[i + h]) break;
             }
@@ -281,19 +283,19 @@ private:
 
     void build_sparse_table() {
         if (n <= 1) return;
-        int max_log = 0;
-        while ((1 << max_log) <= n - 1) max_log++;
-        st.assign(max_log, std::vector<int>(n - 1));
-        for (int i = 0; i < n - 1; ++i) {
+        ll max_log = 0;
+        while ((1LL << max_log) <= n - 1) max_log++;
+        st.assign(max_log, std::vector<ll>(n - 1));
+        for (ll i = 0; i < n - 1; ++i) {
             st[0][i] = lcp[i];
         }
-        for (int k = 1; k < max_log; ++k) {
-            for (int i = 0; i + (1 << k) <= n - 1; ++i) {
-                st[k][i] = std::min(st[k - 1][i], st[k - 1][i + (1 << (k - 1))]);
+        for (ll k = 1; k < max_log; ++k) {
+            for (ll i = 0; i + (1LL << k) <= n - 1; ++i) {
+                st[k][i] = std::min(st[k - 1][i], st[k - 1][i + (1LL << (k - 1))]);
             }
         }
         lookup.assign(n, 0);
-        for (int i = 2; i < n; ++i) {
+        for (ll i = 2; i < n; ++i) {
             lookup[i] = lookup[i >> 1] + 1;
         }
     }

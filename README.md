@@ -5,6 +5,11 @@ AtCoder などの競技プログラミングで使用する C++ テンプレー�
 
 ---
 
+## ビジュアル図解ガイド (Visual Guide)
+- [visual_guide.html](file:///C:/Users/yurina256/Desktop/atcoder/lib/visual_guide.html): 各アルゴリズム・データ構造の直感的なビジュアル図解＆動的シミュレータ（ブラウザで閲覧可能）
+
+---
+
 ## テンプレート (Template)
 - [template.cpp](file:///C:/Users/yurina256/Desktop/atcoder/lib/template.cpp): 基本的な型定義、マクロ、高速I/O、`ordered_set` 等を含む標準の解答用テンプレート
 
@@ -32,6 +37,7 @@ AtCoder などの競技プログラミングで使用する C++ テンプレー�
 - [EulerTour.cpp](file:///C:/Users/yurina256/Desktop/atcoder/lib/Graph/EulerTour.cpp): 木を平坦化し、部分木に対する処理を1次元配列の区間クエリに変換するオイラーツアー (非再帰)
 - [Kruskal.cpp](file:///C:/Users/yurina256/Desktop/atcoder/lib/Graph/Kruskal.cpp): 無向グラフの最小/最大全域木（Spanning Tree）を $O(E \log V)$ で求めるクラスカル法
 - [HLD.cpp](file:///C:/Users/yurina256/Desktop/atcoder/lib/Graph/HLD.cpp): 木に対するパス・部分木クエリを効率的に処理する重軽分解 (Heavy-Light Decomposition)
+- [LinkCutTree.cpp](file:///C:/Users/yurina256/Desktop/atcoder/lib/Graph/LinkCutTree.cpp): 動的な森に対する辺の追加・削除、連結判定、根変更、パス上のモノイド集約を償却 $O(\log V)$ で処理する Link-Cut Tree
 
 ### 3. 数学・数論 (Math)
 - [Combination.cpp](file:///C:/Users/yurina256/Desktop/atcoder/lib/Math/Combination.cpp): 前計算を行い、二項係数 $_n\mathrm{C}_r \pmod P$ などを $O(1)$ で求める構造体
@@ -75,7 +81,6 @@ AtCoder などの競技プログラミングで使用する C++ テンプレー�
 ### 4. 幾何学 (Geometry)
 - [Geometry.cpp](file:///C:/Users/yurina256/Desktop/atcoder/lib/unverified/Geometry/Geometry.cpp): 点・直線・円などの基本オブジェクト定義、CCW、五心 (重心・内心・外心・垂心・傍心) や凸包を処理する幾何ライブラリ
 - [Geometry3D.cpp](file:///C:/Users/yurina256/Desktop/atcoder/lib/unverified/Geometry/Geometry3D.cpp): 3次元空間における点・直線・線分・平面オブジェクトの定義、射影、点と直線の最短距離などを処理する3次元幾何ライブラリ
-
 
 
 

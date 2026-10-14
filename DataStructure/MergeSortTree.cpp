@@ -2,6 +2,8 @@
 #include <vector>
 #include <algorithm>
 
+using ll = long long;
+
 /**
  * @brief Merge Sort Tree (マージソート木)
  *
@@ -18,7 +20,7 @@
  */
 template <typename T>
 struct MergeSortTree {
-  int n;
+  ll n;
   std::vector<std::vector<T>> tree;
 
   MergeSortTree() = default;
@@ -29,14 +31,14 @@ struct MergeSortTree {
    * @param a 対象の配列
    */
   MergeSortTree(const std::vector<T>& a) {
-    int sz = a.size();
+    ll sz = a.size();
     n = 1;
     while (n < sz) n <<= 1;
     tree.resize(2 * n);
-    for (int i = 0; i < sz; ++i) {
+    for (ll i = 0; i < sz; ++i) {
       tree[n + i] = {a[i]};
     }
-    for (int i = n - 1; i > 0; --i) {
+    for (ll i = n - 1; i > 0; --i) {
       const auto& left = tree[2 * i];
       const auto& right = tree[2 * i + 1];
       tree[i].resize(left.size() + right.size());
@@ -50,11 +52,11 @@ struct MergeSortTree {
    * @param l 左端インデックス (0-indexed, 閉)
    * @param r 右端インデックス (0-indexed, 開)
    * @param x 上限値 (閉)
-   * @return int 要素数
+   * @return ll 要素数
    */
-  int count_le(int l, int r, T x) const {
+  ll count_le(ll l, ll r, T x) const {
     if (l >= r) return 0;
-    int count = 0;
+    ll count = 0;
     l += n;
     r += n;
     while (l < r) {
@@ -78,11 +80,11 @@ struct MergeSortTree {
    * @param l 左端インデックス (0-indexed, 閉)
    * @param r 右端インデックス (0-indexed, 開)
    * @param x 上限値 (開)
-   * @return int 要素数
+   * @return ll 要素数
    */
-  int count_lt(int l, int r, T x) const {
+  ll count_lt(ll l, ll r, T x) const {
     if (l >= r) return 0;
-    int count = 0;
+    ll count = 0;
     l += n;
     r += n;
     while (l < r) {
@@ -106,9 +108,9 @@ struct MergeSortTree {
    * @param l 左端インデックス (0-indexed, 閉)
    * @param r 右端インデックス (0-indexed, 開)
    * @param x 下限値 (閉)
-   * @return int 要素数
+   * @return ll 要素数
    */
-  int count_ge(int l, int r, T x) const {
+  ll count_ge(ll l, ll r, T x) const {
     return (r - l) - count_lt(l, r, x);
   }
 
@@ -118,9 +120,9 @@ struct MergeSortTree {
    * @param l 左端インデックス (0-indexed, 閉)
    * @param r 右端インデックス (0-indexed, 開)
    * @param x 下限値 (開)
-   * @return int 要素数
+   * @return ll 要素数
    */
-  int count_gt(int l, int r, T x) const {
+  ll count_gt(ll l, ll r, T x) const {
     return (r - l) - count_le(l, r, x);
   }
 
@@ -131,9 +133,9 @@ struct MergeSortTree {
    * @param r 右端インデックス (0-indexed, 開)
    * @param x_min 下限値 (閉)
    * @param x_max 上限値 (閉)
-   * @return int 要素数
+   * @return ll 要素数
    */
-  int count_range(int l, int r, T x_min, T x_max) const {
+  ll count_range(ll l, ll r, T x_min, T x_max) const {
     if (x_min > x_max || l >= r) return 0;
     return count_le(l, r, x_max) - count_lt(l, r, x_min);
   }

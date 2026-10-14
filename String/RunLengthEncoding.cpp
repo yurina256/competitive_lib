@@ -3,6 +3,8 @@
 #include <string>
 #include <utility>
 
+using ll = long long;
+
 /**
  * @brief ランレングス圧縮 (Run Length Encoding / RLE)
  * 
@@ -11,17 +13,17 @@
  * 計算量: O(N)
  * 
  * @param s 圧縮対象の文字列
- * @return std::vector<std::pair<char, long long>> 圧縮結果
+ * @return std::vector<std::pair<char, ll>> 圧縮結果
  */
-inline std::vector<std::pair<char, long long>> rle(const std::string& s) {
-  std::vector<std::pair<char, long long>> ans;
+inline std::vector<std::pair<char, ll>> rle(const std::string& s) {
+  std::vector<std::pair<char, ll>> ans;
   if (s.empty()) return ans;
 
-  long long n = s.size();
-  long long cnt = 1;
+  ll n = s.size();
+  ll cnt = 1;
   char c = s[0];
 
-  for (int i = 1; i < n; i++) {
+  for (ll i = 1; i < n; i++) {
     if (c != s[i]) {
       ans.push_back({c, cnt});
       cnt = 1;

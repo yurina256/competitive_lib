@@ -1,6 +1,8 @@
 #pragma once
 #include <vector>
 
+using ll = long long;
+
 /**
  * @brief 区別しない集合に分ける全列挙
  * 
@@ -12,18 +14,18 @@
  * 計算量: O(Bell(N) * N) (N=10 のとき Bell(10) = 115,975 通り)
  * 
  * @param n 要素数
- * @return std::vector<std::vector<int>> 列挙されたグループ割り当てのリスト
+ * @return std::vector<std::vector<ll>> 列挙されたグループ割り当てのリスト
  */
-inline std::vector<std::vector<int>> enumerate_set_partitions(int n) {
-  std::vector<std::vector<int>> res;
-  std::vector<int> current;
+inline std::vector<std::vector<ll>> enumerate_set_partitions(ll n) {
+  std::vector<std::vector<ll>> res;
+  std::vector<ll> current;
 
-  auto dfs = [&](auto self, int k) -> void {
-    if ((int)current.size() == n) {
+  auto dfs = [&](auto self, ll k) -> void {
+    if ((ll)current.size() == n) {
       res.push_back(current);
       return;
     }
-    for (int i = 0; i <= k; i++) {
+    for (ll i = 0; i <= k; i++) {
       current.push_back(i);
       self(self, (i == k) ? k + 1 : k);
       current.pop_back();

@@ -2,6 +2,8 @@
 #include <vector>
 #include <string>
 
+using ll = long long;
+
 /**
  * @brief Z-algorithm
  * 
@@ -10,14 +12,14 @@
  * 計算量: O(|S|)
  * 
  * @param s 対象の文字列
- * @return std::vector<int> LCP長の配列
+ * @return std::vector<ll> LCP長の配列
  */
-inline std::vector<int> z_algorithm(const std::string& s) {
-  int n = s.size();
-  std::vector<int> z(n);
+inline std::vector<ll> z_algorithm(const std::string& s) {
+  ll n = s.size();
+  std::vector<ll> z(n);
   if (n == 0) return z;
   z[0] = n;
-  int i = 1, j = 0;
+  ll i = 1, j = 0;
   while (i < n) {
     while (i + j < n && s[j] == s[i + j]) j++;
     z[i] = j;
@@ -25,7 +27,7 @@ inline std::vector<int> z_algorithm(const std::string& s) {
       i++;
       continue;
     }
-    int k = 1;
+    ll k = 1;
     while (i + k < n && k + z[k] < j) {
       z[i + k] = z[k];
       k++;

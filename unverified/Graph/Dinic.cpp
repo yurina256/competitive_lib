@@ -4,6 +4,8 @@
 #include <algorithm>
 #include <limits>
 
+using ll = long long;
+
 /**
  * @brief 最大流 (Dinic法)
  * 
@@ -11,38 +13,38 @@
  * 
  * 計算量: O(V^2 E) (実用的には非常に高速。二部マッチングでは O(E√V))
  * 
- * @tparam Flow 流量の型 (通常は int, long long, double など)
+ * @tparam Flow 流量の型 (デフォルト: ll)
  */
-template <typename Flow>
+template <typename Flow = ll>
 struct Dinic {
   struct Edge {
-    int to;
+    ll to;
     Flow cap;
-    int rev;
+    ll rev;
   };
 
-  int n;
+  ll n;
   std::vector<std::vector<Edge>> g;
-  std::vector<int> level;
-  std::vector<int> iter;
+  std::vector<ll> level;
+  std::vector<ll> iter;
 
-  Dinic(int n) : n(n), g(n), level(n), iter(n) {}
+  Dinic(ll n) : n(n), g(n), level(n), iter(n) {}
 
   /**
    * @brief s から t へ容量 cap の有向辺を追加する (逆辺も追加)
    */
-  void add_edge(int from, int to, Flow cap) {
-    g[from].push_back({to, cap, (int)g[to].size()});
-    g[to].push_back({from, 0, (int)g[from].size() - 1});
+  void add_edge(ll from, ll to, Flow cap) {
+    g[from].push_back({to, cap, (ll)g[to].size()});
+    g[to].push_back({from, 0, (ll)g[from].size() - 1});
   }
 
-  void bfs(int s) {
+  void bfs(ll s) {
     std::fill(level.begin(), level.end(), -1);
-    std::queue<int> que;
+    std::queue<ll> que;
     level[s] = 0;
     que.push(s);
     while (!que.empty()) {
-      int v = que.front();
+      ll v = que.front();
       que.pop();
       for (const auto& edge : g[v]) {
         if (edge.cap > 0 && level[edge.to] < 0) {
@@ -53,9 +55,9 @@ struct Dinic {
     }
   }
 
-  Flow dfs(int v, int t, Flow f) {
+  Flow dfs(ll v, ll t, Flow f) {
     if (v == t) return f;
-    for (int& i = iter[v]; i < (int)g[v].size(); i++) {
+    for (ll& i = iter[v]; i < (ll)g[v].size(); i++) {
       auto& edge = g[v][i];
       if (edge.cap > 0 && level[v] < level[edge.to]) {
         Flow d = dfs(edge.to, t, std::min(f, edge.cap));
@@ -72,7 +74,7 @@ struct Dinic {
   /**
    * @brief s から t への最大流を求める
    */
-  Flow max_flow(int s, int t) {
+  Flow max_flow(ll s, ll t) {
     Flow flow = 0;
     const Flow INF = std::numeric_limits<Flow>::max() / 2;
     while (true) {

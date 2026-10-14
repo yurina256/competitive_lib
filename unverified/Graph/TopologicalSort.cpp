@@ -2,6 +2,8 @@
 #include <vector>
 #include <queue>
 
+using ll = long long;
+
 /**
  * @brief トポロジカルソート (Topological Sort)
  * 
@@ -14,26 +16,26 @@
  * @param order トポロジカルソートされた結果の頂点番号配列 (出力先)
  * @return bool トポロジカルソートが成功したか (サイクルがなければ true)
  */
-inline bool topological_sort(const std::vector<std::vector<int>>& g, std::vector<int>& order) {
-  int n = g.size();
-  std::vector<int> indeg(n, 0);
-  for (int i = 0; i < n; i++) {
-    for (int to : g[i]) {
+inline bool topological_sort(const std::vector<std::vector<ll>>& g, std::vector<ll>& order) {
+  ll n = g.size();
+  std::vector<ll> indeg(n, 0);
+  for (ll i = 0; i < n; i++) {
+    for (ll to : g[i]) {
       indeg[to]++;
     }
   }
 
-  std::queue<int> que;
-  for (int i = 0; i < n; i++) {
+  std::queue<ll> que;
+  for (ll i = 0; i < n; i++) {
     if (indeg[i] == 0) que.push(i);
   }
 
   order.clear();
   while (!que.empty()) {
-    int v = que.front();
+    ll v = que.front();
     que.pop();
     order.push_back(v);
-    for (int to : g[v]) {
+    for (ll to : g[v]) {
       indeg[to]--;
       if (indeg[to] == 0) {
         que.push(to);
@@ -41,5 +43,5 @@ inline bool topological_sort(const std::vector<std::vector<int>>& g, std::vector
     }
   }
 
-  return (int)order.size() == n;
+  return (ll)order.size() == n;
 }

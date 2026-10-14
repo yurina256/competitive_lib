@@ -2,6 +2,8 @@
 #include <vector>
 #include <algorithm>
 
+using ll = long long;
+
 /**
  * @brief Range Frequency Query (区間出現回数クエリ)
  *
@@ -18,9 +20,9 @@
  */
 template <typename T>
 struct RangeFreqQuery {
-  std::vector<T> xs;                  // 座標圧縮用のユニークな値リスト
-  std::vector<std::vector<int>> pos;  // 各値が出現するインデックスのリスト
-  bool is_compressed;                 // 座標圧縮を使用しているかフラグ
+  std::vector<T> xs;                 // 座標圧縮用のユニークな値リスト
+  std::vector<std::vector<ll>> pos;  // 各値が出現するインデックスのリスト
+  bool is_compressed;                // 座標圧縮を使用しているかフラグ
 
   RangeFreqQuery() = default;
 
@@ -31,14 +33,14 @@ struct RangeFreqQuery {
    * @param a 対象の配列
    */
   RangeFreqQuery(const std::vector<T>& a) : is_compressed(true) {
-    int n = a.size();
+    ll n = a.size();
     xs = a;
     std::sort(xs.begin(), xs.end());
     xs.erase(std::unique(xs.begin(), xs.end()), xs.end());
 
     pos.resize(xs.size());
-    for (int i = 0; i < n; ++i) {
-      int val_idx = std::lower_bound(xs.begin(), xs.end(), a[i]) - xs.begin();
+    for (ll i = 0; i < n; ++i) {
+      ll val_idx = std::lower_bound(xs.begin(), xs.end(), a[i]) - xs.begin();
       pos[val_idx].push_back(i);
     }
   }
@@ -50,10 +52,10 @@ struct RangeFreqQuery {
    * @param a 対象の配列 (要素は 0 以上 V 未満の整数)
    * @param V 値の上限 (0 以上 V 未満)
    */
-  RangeFreqQuery(const std::vector<T>& a, int V) : is_compressed(false) {
-    int n = a.size();
+  RangeFreqQuery(const std::vector<T>& a, ll V) : is_compressed(false) {
+    ll n = a.size();
     pos.resize(V);
-    for (int i = 0; i < n; ++i) {
+    for (ll i = 0; i < n; ++i) {
       if (a[i] >= 0 && a[i] < V) {
         pos[a[i]].push_back(i);
       }
@@ -66,18 +68,18 @@ struct RangeFreqQuery {
    * @param l 左端インデックス (0-indexed, 閉)
    * @param r 右端インデックス (0-indexed, 開)
    * @param x カウント対象の値
-   * @return int 出現回数
+   * @return ll 出現回数
    */
-  int count(int l, int r, T x) const {
+  ll count(ll l, ll r, T x) const {
     if (l >= r) return 0;
-    int val_idx = -1;
+    ll val_idx = -1;
     if (is_compressed) {
       auto it = std::lower_bound(xs.begin(), xs.end(), x);
       if (it == xs.end() || *it != x) return 0;
       val_idx = it - xs.begin();
     } else {
       if (x < 0 || x >= (T)pos.size()) return 0;
-      val_idx = (int)x;
+      val_idx = (ll)x;
     }
 
     const auto& p = pos[val_idx];
@@ -92,9 +94,9 @@ struct RangeFreqQuery {
    * @param l 左端インデックス (0-indexed, 閉)
    * @param r 右端インデックス (0-indexed, 閉)
    * @param x カウント対象の値
-   * @return int 出現回数
+   * @return ll 出現回数
    */
-  int count_closed(int l, int r, T x) const {
+  ll count_closed(ll l, ll r, T x) const {
     return count(l, r + 1, x);
   }
 };

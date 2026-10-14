@@ -16,3 +16,10 @@ int main() {
 
     return 0;
 }
+
+/*
+出力結果:
+=== Z-algorithm Example ===
+String: ababa
+Z-array: 5 0 3 0 1 
+*/

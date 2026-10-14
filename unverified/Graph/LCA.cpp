@@ -2,6 +2,8 @@
 #include <vector>
 #include <utility>
 
+using ll = long long;
+
 /**
  * @brief 最小共通祖先 (Lowest Common Ancestor / LCA)
  * 
@@ -11,10 +13,10 @@
  * 計算量: 構築 O(V log V), クエリ O(log V)
  */
 struct LCA {
-  int n;
-  int log_h;
-  std::vector<int> depth;
-  std::vector<std::vector<int>> parent;
+  ll n;
+  ll log_h;
+  std::vector<ll> depth;
+  std::vector<std::vector<ll>> parent;
 
   LCA() = default;
 
@@ -23,14 +25,14 @@ struct LCA {
    * @param g 隣接リスト
    * @param root 根とする頂点 (デフォルト 0)
    */
-  LCA(const std::vector<std::vector<long long>>& g, int root = 0) {
+  LCA(const std::vector<std::vector<ll>>& g, ll root = 0) {
     n = g.size();
     log_h = 1;
-    while ((1 << log_h) <= n) log_h++;
+    while ((1LL << log_h) <= n) log_h++;
     depth.assign(n, 0);
-    parent.assign(log_h, std::vector<int>(n, -1));
+    parent.assign(log_h, std::vector<ll>(n, -1));
 
-    auto dfs = [&](auto self, int v, int p, int d) -> void {
+    auto dfs = [&](auto self, ll v, ll p, ll d) -> void {
       parent[0][v] = p;
       depth[v] = d;
       for (auto next : g[v]) {
@@ -41,8 +43,8 @@ struct LCA {
     };
     dfs(dfs, root, -1, 0);
 
-    for (int k = 0; k < log_h - 1; k++) {
-      for (int v = 0; v < n; v++) {
+    for (ll k = 0; k < log_h - 1; k++) {
+      for (ll v = 0; v < n; v++) {
         if (parent[k][v] < 0) {
           parent[k + 1][v] = -1;
         } else {
@@ -55,15 +57,15 @@ struct LCA {
   /**
    * @brief 頂点 u と v のLCA（最小共通祖先）を取得する
    */
-  int query(int u, int v) const {
+  ll query(ll u, ll v) const {
     if (depth[u] > depth[v]) std::swap(u, v);
-    for (int k = 0; k < log_h; k++) {
+    for (ll k = 0; k < log_h; k++) {
       if ((depth[v] - depth[u]) >> k & 1) {
         v = parent[k][v];
       }
     }
     if (u == v) return u;
-    for (int k = log_h - 1; k >= 0; k--) {
+    for (ll k = log_h - 1; k >= 0; k--) {
       if (parent[k][u] != parent[k][v]) {
         u = parent[k][u];
         v = parent[k][v];
@@ -75,7 +77,7 @@ struct LCA {
   /**
    * @brief 頂点 u と v の間の辺数 (距離) を取得する
    */
-  int distance(int u, int v) const {
+  ll distance(ll u, ll v) const {
     return depth[u] + depth[v] - 2 * depth[query(u, v)];
   }
 };

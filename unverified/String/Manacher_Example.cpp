@@ -28,3 +28,12 @@ int main() {
 
     return 0;
 }
+
+/*
+出力結果:
+=== Manacher's Algorithm Example ===
+String: abaaab
+Manacher R-array: 1 2 1 3 1 1 
+Dummy String: $a$b$a$a$a$b$
+Manacher R-array with dummy: 1 2 1 4 1 2 3 6 3 2 1 2 1 
+*/
