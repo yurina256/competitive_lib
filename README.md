@@ -65,6 +65,8 @@ AtCoder などの競技プログラミングで使用する C++ テンプレー�
 動作確認済みですが、検証中のため `unverified/` ディレクトリに配置されているライブラリ群です。各ファイルと同階層に使用例を示す `_Example.cpp` があります。
 ### 1. データ構造 (DataStructure)
 - [SegTree2D.cpp](file:///C:/Users/yurina256/Desktop/atcoder/lib/unverified/DataStructure/SegTree2D.cpp): 2次元グリッド上の1点更新・矩形区間クエリを $O(\log H \log W)$ で処理する2次元セグメント木
+- [SegTreeBeats.cpp](file:///C:/Users/yurina256/Desktop/atcoder/lib/unverified/DataStructure/SegTreeBeats.cpp): 区間 chmin / chmax / 加算 / 更新 と区間総和 / 最大値 / 最小値クエリをならし $O(\log^2 N)$ で処理する Segment Tree Beats
+- [ReversibleSegTree.cpp](file:///C:/Users/yurina256/Desktop/atcoder/lib/unverified/DataStructure/ReversibleSegTree.cpp): 平衡二分探索木 (Implicit Treap) を用い、区間反転 `reverse(l, r)`・区間作用・区間集約・挿入・削除を $O(\log N)$ で処理する反転可能遅延セグメント木
 
 ### 2. グラフアルゴリズム (Graph)
 - [LCA.cpp](file:///C:/Users/yurina256/Desktop/atcoder/lib/unverified/Graph/LCA.cpp): 木における2頂点の共通する最深の祖先を $O(\log V)$ で求める最小共通祖先構造体

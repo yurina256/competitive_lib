@@ -247,5 +247,12 @@ std::vector<std::vector<T>> flip(const std::vector<std::vector<T>>& v) {
   return transposed;
 }
 //==================Template END===========================
+void solve() {
+  ll n, k;
+  cin >> n >> k;
+}
 signed main() {
+  ll t;
+  cin >> t;
+  rep(T, t) solve();
 }
