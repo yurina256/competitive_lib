@@ -30,6 +30,14 @@ int main() {
     uf.unite(3, 4);
     cout << "Same(0, 3)? " << (uf.same(0, 3) ? "Yes" : "No") << endl;
 
+    // 現在のグループ一覧を取得
+    cout << "\nGroups:" << endl;
+    for (const auto& g : uf.groups()) {
+        cout << "{ ";
+        for (ll v : g) cout << v << " ";
+        cout << "}" << endl;
+    }
+
     // 全体を併合
     cout << "\nUnite 2 and 3:" << endl;
     uf.unite(2, 3);
@@ -56,6 +64,10 @@ Size of 2: 3
 
 Unite 3 and 4:
 Same(0, 3)? No
+
+Groups:
+{ 0 1 2 }
+{ 3 4 }
 
 Unite 2 and 3:
 Same(0, 4)? Yes

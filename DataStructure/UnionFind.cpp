@@ -1,4 +1,5 @@
 #pragma once
+#include <algorithm>
 #include <vector>
 #include <utility>
 
@@ -50,5 +51,30 @@ struct UnionFind {
    */
   bool same(ll x, ll y) {
     return find(x) == find(y);
+  }
+
+  /**
+   * @brief 全体を連結成分ごとに分け、その頂点番号のリストのリストを返す (ACL dsu::groups 相当)
+   * @return std::vector<std::vector<ll>> 各連結成分の頂点番号リスト
+   */
+  std::vector<std::vector<ll>> groups() {
+    ll n = data.size();
+    std::vector<ll> leader_buf(n), group_size(n);
+    for (ll i = 0; i < n; i++) {
+      leader_buf[i] = find(i);
+      group_size[leader_buf[i]]++;
+    }
+    std::vector<std::vector<ll>> result(n);
+    for (ll i = 0; i < n; i++) {
+      result[i].reserve(group_size[i]);
+    }
+    for (ll i = 0; i < n; i++) {
+      result[leader_buf[i]].push_back(i);
+    }
+    result.erase(
+        std::remove_if(result.begin(), result.end(),
+                       [](const std::vector<ll>& v) { return v.empty(); }),
+        result.end());
+    return result;
   }
 };

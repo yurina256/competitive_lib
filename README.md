@@ -1,3 +1,5 @@
+# **⚠️AI Gen Lib**
+- 完全な動作を保証しません。無いよりマシ程度やね　以下AI
 # Yurina256 Competitive Programming Library
 
 AtCoder などの競技プログラミングで使用する C++ テンプレートおよびアルゴリズム・データ構造のライブラリです。  
@@ -32,6 +34,7 @@ AtCoder などの競技プログラミングで使用する C++ テンプレー�
 
 ### 2. グラフアルゴリズム (Graph)
 - [Dijkstra.cpp](file:///C:/Users/yurina256/Desktop/atcoder/lib/Graph/Dijkstra.cpp): 単一始点最短経路を $O((E + V) \log V)$ で求めるダイクストラ法
+- [BellmanFord.cpp](file:///C:/Users/yurina256/Desktop/atcoder/lib/Graph/BellmanFord.cpp): 負辺を含むグラフの単一始点最短経路および負閉路検出・影響範囲伝播を $O(VE)$ で求めるベルマンフォード法
 - [WarshallFloyd.cpp](file:///C:/Users/yurina256/Desktop/atcoder/lib/Graph/WarshallFloyd.cpp): 全点対間最短経路を $O(V^3)$ で求めるワーシャルフロイド法
 - [TreeDiameter.cpp](file:///C:/Users/yurina256/Desktop/atcoder/lib/Graph/TreeDiameter.cpp): 木の直径（最遠頂点間の最長パス長）を $O(V)$ で求めるアルゴリズム
 - [EulerTour.cpp](file:///C:/Users/yurina256/Desktop/atcoder/lib/Graph/EulerTour.cpp): 木を平坦化し、部分木に対する処理を1次元配列の区間クエリに変換するオイラーツアー (非再帰)
