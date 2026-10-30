@@ -62,6 +62,12 @@ AtCoder などの競技プログラミングで使用する C++ テンプレー�
 - [RollingHash.cpp](file:///C:/Users/yurina256/Desktop/atcoder/lib/String/RollingHash.cpp): 文字列の任意の部分文字列のハッシュ値を $O(1)$ で取得し、一致判定等を行うデータ構造
 - [SAIS.cpp](file:///C:/Users/yurina256/Desktop/atcoder/lib/String/SAIS.cpp): 文字列の接尾辞配列 (Suffix Array) を最悪計算量 $O(N)$ で構築する SA-IS 法
 
+### 6. ヒューリスティック (Hu)
+- [HuUtils.cpp](file:///C:/Users/yurina256/Desktop/atcoder/lib/Hu/HuUtils.cpp): 高速乱数生成器 (xoshiro256**) および高精度タイマー
+- [SimulatedAnnealing.cpp](file:///C:/Users/yurina256/Desktop/atcoder/lib/Hu/SimulatedAnnealing.cpp): 局所探索・山登り法・焼きなまし法の汎用受理判定器
+- [BeamSearch.cpp](file:///C:/Users/yurina256/Desktop/atcoder/lib/Hu/BeamSearch.cpp): 親ポインタ方式のメモリ効率の良い汎用ビームサーチ
+- [ChokudaiSearch.cpp](file:///C:/Users/yurina256/Desktop/atcoder/lib/Hu/ChokudaiSearch.cpp): 制限時間いっぱい段階的展開を反復する時間駆動型木探索
+
 ---
 
 ## 未検証ライブラリ (unverified)
